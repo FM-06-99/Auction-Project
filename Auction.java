@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * A simple model of an auction.
@@ -70,7 +71,7 @@ public class Auction
             }
         }
     }
-
+    // question 5: you risk getting a lot of internal errors.
     /**
      * Return the lot with the given number. Return null if a lot with this 
      * number does not exist.
@@ -80,19 +81,15 @@ public class Auction
     public Lot getLot(int lotNumber)
     {
         if((lotNumber >= 1) && (lotNumber < nextLotNumber)) {
-            // The number seems to be reasonable.
-            Lot selectedLot = listOfLots.get(lotNumber - 1);
-            // Include a confidence check to be sure we have the
-            // right lot.
-            if(selectedLot.getNumber() != lotNumber) {
-                System.out.println("Internal error: Lot number " +
-                                   selectedLot.getNumber() +
-                                   " was returned instead of " +
-                                   lotNumber);
-                // Don't return an invalid lot.
-                selectedLot = null;
+            //question 6
+            for (Lot aLot : listOfLots){
+                if (aLot.getNumber() == lotNumber){
+                    return aLot;
+                }
             }
-            return selectedLot;
+            System.out.println("Lot number: " + lotNumber +
+                               " seem to have been removed.");
+            return null;
         }
         else {
             System.out.println("Lot number: " + lotNumber +
@@ -129,7 +126,27 @@ public class Auction
         }
         return UnsoldList;
     }
-    
-
+    // question 7
+    public Lot removeLot(int number)
+    {
+        boolean match = false;
+        Iterator<Lot> it = listOfLots.iterator();
+        Lot lot = null;
+        while(it.hasNext() && match == false)
+        {
+            lot = it.next();
+            if(lot.getNumber() == number)
+            {
+            it.remove();
+            match = true;
+            System.out.println(number + "has been removed.");
+            }
+        }
+        if (match == false)
+        {
+            System.out.println("Lot number: "+ number + "does not exist.");
+            lot = null;
+        }
+        return lot;
+    }
 }
-
